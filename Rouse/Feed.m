@@ -8,24 +8,37 @@
 
 #import "Feed.h"
 
+@interface Feed() <NSCoding>
+
+@end
+
 @implementation Feed
 
 @synthesize name;
-@synthesize images;
 @synthesize url;
 
-- (id) init
+- (id) initWithName:(NSString*)Name Url:(NSString*)Url
 {
     if(self = [super init])
     {
-        
+        self.name = Name;
+        self.url = Url;
     }
     return self;
 }
 
--(void)update
+- (void)encodeWithCoder:(NSCoder *)coder
 {
+    [coder encodeObject:self.name forKey:@"Name"];
+    [coder encodeObject:self.url forKey:@"Url"];
+}
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+    NSString *nameVar = [coder decodeObjectForKey:@"Name"];
+    NSString *urlVar = [coder decodeObjectForKey:@"Url"];
     
+    return [[Feed alloc]initWithName:nameVar Url:urlVar];
 }
 
 @end

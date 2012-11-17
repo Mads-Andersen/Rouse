@@ -17,7 +17,7 @@
 @property (retain) NSMutableArray* feeds;
 
 -(id)init;
--(void)load;
--(void)save;
++(FeedManager*)loadFromDevice;
+-(BOOL)saveToDevice;
 
 @end

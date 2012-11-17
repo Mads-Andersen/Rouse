@@ -9,5 +9,19 @@
 #import <Foundation/Foundation.h>
 
 @interface Photo : NSObject
+{
+    NSString *thumbnailURL;
+    NSString *fullContentURL;
+    UIImage *thumbnailImage;
+    UIImage *fullContentImage;
+}
+
+@property (retain) NSString *fullContentURL;
+@property (retain) NSString *thumbnailURL;
+@property (retain) UIImage *thumbnailImage;
+@property (retain) UIImage *fullContentImage;
+
+-(id)initWithContent:(NSString*)contentUrl: (NSString*)thumbnailUrl;
+-(id)initWithUrl:(NSString*)contentUrl;
 
 @end

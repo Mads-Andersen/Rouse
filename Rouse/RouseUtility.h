@@ -10,10 +10,9 @@
 #import <Foundation/Foundation.h>
 
 @interface RouseUtility : NSObject
-{
-    
-}
 
-+ (void) showMessage:(NSString*) message;
++(CGSize) currentSize;
++(CGSize) sizeInOrientation:(UIInterfaceOrientation)orientation;
++(float) randFloatBetween:(float)low and:(float)high;
 
 @end

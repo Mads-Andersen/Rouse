@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Feed.h"
 
-@interface RouseViewController : UIViewController
+@interface RouseFeedController : UIViewController
+{
+    Feed *feed;
+    NSMutableArray *photos;
+    NSMutableArray *cells;
+}
+@property (nonatomic, strong) Feed *feed;
+@property (nonatomic, retain) NSMutableArray *photos;
+@property (nonatomic, retain) NSMutableArray *cells;
+
+- (void) setupWith:(Feed*)feedVar;
 
 @end

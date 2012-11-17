@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Photo.h"
 
 @interface RouseImageDetailController : UIViewController
+{
+    Photo *photo;
+}
+@property (nonatomic, retain) Photo *photo;
+
+- (id)initWith:(Photo*)photoVar;
 
 @end

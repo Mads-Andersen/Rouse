@@ -7,32 +7,60 @@
 //
 
 #import "RouseFeedsManagerViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
-@interface RouseFeedsManagerViewController ()
+@interface RouseFeedsManagerViewController () <UITableViewDataSource, UITableViewDelegate>
+
+@property (weak) IBOutlet UITextField *textField;
+@property (weak) IBOutlet UIView *backgroundView;
+@property (weak) IBOutlet UIButton *addButton;
+
+-(IBAction)cancel:(id)sender;
+-(IBAction)addFeed:(id)sender;
 
 @end
 
 @implementation RouseFeedsManagerViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize childView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    self.backgroundView.layer.cornerRadius = 4;
+    self.backgroundView.layer.masksToBounds = YES;
+    self.backgroundView.opaque = NO;
+    self.addButton.layer.cornerRadius = 4;
+    self.addButton.layer.masksToBounds = YES;
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+-(IBAction)cancel:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
+}
+
+-(IBAction)addFeed:(id)sender
+{
+    NSString *text = self.textField.text;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateFeed" object:text];
+    
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+{
+    return 9;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RouseSuggestionCell" forIndexPath:indexPath];
+    return cell;
 }
 
 @end

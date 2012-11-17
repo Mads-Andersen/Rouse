@@ -7,32 +7,91 @@
 //
 
 #import "RouseImageDetailController.h"
+#import "RSSParser.h"
 
 @interface RouseImageDetailController ()
-
+@property (nonatomic, retain) UIImageView *imageView;
 @end
 
 @implementation RouseImageDetailController
+@synthesize photo;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWith:(Photo*)photoVar
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    if(self == [super init])
+    {
+        self.photo = photoVar;
+        self.imageView = [[UIImageView alloc]init];
+        self.imageView.userInteractionEnabled = YES;
+        self.imageView.image = photoVar.thumbnailImage;
+        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     }
+    
     return self;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    [super viewWillAppear:animated];
+
+    
+    dispatch_async(dispatch_get_global_queue(0,0), ^
+    {
+        UIImage *image = [RSSParser getFullImage:self.photo];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            self.imageView.image = image;
+            //self.view.superview.bounds = CGRectMake(100, 100, image.size.width, image.size.height);
+            CGSize bounds = self.view.superview.bounds.size;
+            [self.imageView setFrame:CGRectMake(5, 5, bounds.width-2*5, bounds.height-2*5)];
+            [self.view addSubview:self.imageView];
+        });
+    });
+    
+    UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTap:)];
+    [self.imageView addGestureRecognizer:tap];
+    
+    
+    
 }
 
-- (void)didReceiveMemoryWarning
+- (void)setImage
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    if(self.photo.thumbnailImage)
+    {
+        self.imageView.image = self.photo.thumbnailImage;
+        return;
+    }
+    else
+    {
+        //UIImage *image = [[RouseConstants instance]LoadingImage];
+        //[self.imageView setImage:image];
+    }
+    
+    dispatch_async(dispatch_get_global_queue(0,0), ^
+    {
+        // UIImage *image = [RSSParser getThumbnailImage:self.photo];
+         dispatch_async(dispatch_get_main_queue(), ^
+         {
+                //self.imageView.image = image;
+         });
+    });
 }
+
+- (UIView*)createImageViewPortrait
+{
+    return self.view;
+}
+
+- (UIView*)createImageViewLandscape
+{
+    return self.view;
+}
+
+- (void)imageTap:(UITapGestureRecognizer *)recognizer
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end

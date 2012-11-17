@@ -3,15 +3,12 @@
 @interface Feed : NSObject
 {
     NSString* name;
-    NSMutableArray* images;
-    NSURL* url;
+    NSString* url;
 }
 
 @property (retain) NSString* name;
-@property (retain) NSMutableArray* images;
-@property (retain) NSURL* url;
+@property (retain) NSString* url;
 
-- (id) init;
-- (void) update;
+- (id) initWithName:(NSString*)Name Url:(NSString*)Url;
 
 @end

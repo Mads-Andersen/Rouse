@@ -7,7 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Feed.h"
+#import "Photo.h"
 
 @interface RSSParser : NSObject
+{
+    NSMutableArray *photos;
+}
+
+-(id)init;
+-(NSMutableArray*)getImages:(NSString*)rssURLString;
++(UIImage*)getThumbnailImage:(Photo*)photo;
++(UIImage*)getFullImage:(Photo*)photo;
 
 @end

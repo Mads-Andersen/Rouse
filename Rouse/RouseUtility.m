@@ -10,10 +10,30 @@
 
 @implementation RouseUtility
 
-+ (void) showMessage:(NSString *)message
++(CGSize) currentSize
 {
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:message message:@"" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
-	[alert show];
+    return [RouseUtility sizeInOrientation:[UIApplication sharedApplication].statusBarOrientation];
+}
+
++(CGSize) sizeInOrientation:(UIInterfaceOrientation)orientation
+{
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    UIApplication *application = [UIApplication sharedApplication];
+    if (UIInterfaceOrientationIsLandscape(orientation))
+    {
+        size = CGSizeMake(size.height, size.width);
+    }
+    if (application.statusBarHidden == NO)
+    {
+        size.height -= MIN(application.statusBarFrame.size.width, application.statusBarFrame.size.height);
+    }
+    return size;
+}
+
++(float) randFloatBetween:(float)low and:(float)high
+{
+    float diff = high - low;
+    return (((float) rand() / RAND_MAX) * diff) + low;
 }
 
 @end
