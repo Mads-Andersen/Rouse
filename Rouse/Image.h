@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Photo : NSObject
+@interface Image : NSObject
 {
     NSString *thumbnailURL;
     NSString *fullContentURL;

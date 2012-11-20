@@ -10,7 +10,7 @@
 #import "RouseFeedsController.h"
 #import "RouseFeedController.h"
 #import "RouseUtility.h"
-#import "Photo.h"
+#import "Image.h"
 #import "Feed.h"
 #import "RouseFeedsManagerViewController.h"
 #import "FeedManager.h"
@@ -44,12 +44,10 @@
 
 - (void)setupBackground
 {
-    //UIImage *refreshImg = [[RouseConstants instance] RefreshImage];
     
     self.title = @"Feeds";
     self.view.backgroundColor = [UIColor colorWithPatternImage:[[RouseConstants instance] BackgroundImage]];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add Feed" style:UIBarButtonItemStylePlain target:self action:@selector(infoButtonTapped:)];
-    //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:refreshImg style:UIBarButtonItemStylePlain target:self action:@selector(refreshButtonTapped:)];
     self.navigationItem.rightBarButtonItem.target = self;
     self.navigationItem.rightBarButtonItem.action = @selector(refreshButtonTapped);
 }
@@ -82,15 +80,20 @@
     for (int i = 0; i < count; i++)
     {
         Feed *feed = [feedManager.feeds objectAtIndex:i];
-        RouseFeedCellView *cell = [[RouseFeedCellView alloc]initWithFeed:feed];
-        UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(feedTap:)];
-        UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-        press.minimumPressDuration = 1.0;
-        [cell addGestureRecognizer:tap];
-        [cell addGestureRecognizer:press];
-        [self.cells addObject:cell];
-        [self.scrollView addSubview:cell];
+        [self createCell:feed];
     }
+}
+
+-(void)createCell:(Feed*)feed
+{
+    RouseFeedCellView *cell = [[RouseFeedCellView alloc]initWithFeed:feed];
+    UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(feedTap:)];
+    UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    press.minimumPressDuration = 1.0;
+    [cell addGestureRecognizer:tap];
+    [cell addGestureRecognizer:press];
+    [self.cells addObject:cell];
+    [self.scrollView addSubview:cell];
 }
 
 - (void)controllerTap:(id)object
@@ -101,7 +104,7 @@
         for (int i = 0; i < count; i++)
         {
             RouseFeedCellView *cell = [self.cells objectAtIndex:i];
-            [cell endWobble];
+            [cell endWiggle];
         }
         self.deletionState = NO;
     }
@@ -124,6 +127,10 @@
     CGRect frame = self.scrollView.frame;
     frame.origin.x = frame.size.width * self.pageControl.currentPage;
     [self.scrollView scrollRectToVisible:frame animated:NO];
+    
+    CGFloat count = [feedManager.feeds count];
+    CGFloat numPages = ceilf(count/MaxFeedsPerPage);
+    [self.pageControl setNumberOfPages:numPages];
 }
 
 -(void)showFeedsViewLandscape
@@ -190,8 +197,19 @@
     [self showCells];
 }
 
+- (void)createFeed:(id)object
+{
+    Feed *feed = [[Feed alloc]initWithName:@"" Url:@"url"];
+    [self.feedManager.feeds addObject:feed];
+    [self.feedManager saveToDevice];
+    [self createCell:feed];
+    [self showCells];
+    
+}
+
 - (void)feedDeleted:(id)object
 {
+    NSLog(@"hej");
     RouseFeedCellView *cell = [object object];
     int index = [self.cells indexOfObject:cell];
     int count = [self.cells count];
@@ -210,6 +228,8 @@
     [self.cells removeObject:cell];
     [self.feedManager.feeds removeObject:cell.feed];
     [self.feedManager saveToDevice];
+    [self showCells];
+    NSLog(@"hej2");
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -228,7 +248,7 @@
         for (int i = 0; i < count; i++)
         {
             RouseFeedCellView *cell = [self.cells objectAtIndex:i];
-            [cell beginWobble];
+            [cell beginWiggle];
         }
         self.deletionState = YES;
     }
@@ -237,31 +257,33 @@
 
 - (void)feedTap:(UITapGestureRecognizer *)recognizer
 {
+    RouseFeedCellView *cell = (RouseFeedCellView*)recognizer.view;
+    RouseFeedController *feedController = [self.storyboard instantiateViewControllerWithIdentifier:@"RouseFeedController"];
+    [feedController setupWith:cell.feed];
+    [self checkStopWobble];
+    [self.navigationController pushViewController:feedController animated:YES];
+}
+
+- (void)infoButtonTapped:(id)sender
+{
+    [self checkStopWobble];
+    [self performSegueWithIdentifier:@"ShowFeedsManager" sender:@"test"];
+    
+}
+
+- (void)checkStopWobble
+{
     if(self.deletionState)
     {
         int count = [self.cells count];
         for (int i = 0; i < count; i++)
         {
             RouseFeedCellView *cell = [self.cells objectAtIndex:i];
-            [cell endWobble];
+            [cell endWiggle];
         }
         self.deletionState = NO;
         return;
     }
-    RouseFeedCellView *cell = (RouseFeedCellView*)recognizer.view;
-    RouseFeedController *feedController = [self.storyboard instantiateViewControllerWithIdentifier:@"RouseFeedController"];
-    [feedController setupWith:cell.feed];
-    [self.navigationController pushViewController:feedController animated:YES];
-}
-
-- (void)refreshButtonTapped
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)infoButtonTapped:(id)sender
-{
-    [self performSegueWithIdentifier:@"ShowFeedsManager" sender:@"test"];
 }
 
 

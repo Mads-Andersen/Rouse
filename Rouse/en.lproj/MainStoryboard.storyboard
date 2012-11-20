@@ -96,11 +96,11 @@
                                             <constraint firstAttribute="height" constant="424" id="IeS-2W-tWQ"/>
                                         </constraints>
                                         <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" showsReorderControl="YES" indentationWidth="10" reuseIdentifier="RouseSuggestionCell" id="rvG-E6-THQ">
-                                                <rect key="frame" x="0.0" y="54" width="523" height="46"/>
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" showsReorderControl="YES" indentationWidth="10" reuseIdentifier="RouseSuggestionCell" id="rvG-E6-THQ" customClass="RouseSuggestionCell">
+                                                <rect key="frame" x="0.0" y="54" width="524" height="46"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="31" y="1" width="461" height="43"/>
+                                                    <rect key="frame" x="31" y="1" width="462" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0k-Ya-uWI">
@@ -125,6 +125,9 @@
                                                             <state key="highlighted">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
+                                                            <connections>
+                                                                <action selector="addFeed:" destination="rvG-E6-THQ" eventType="touchUpInside" id="Qm3-Oa-Xff"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -138,6 +141,9 @@
                                                     <constraint firstItem="T0k-Ya-uWI" firstAttribute="top" secondItem="Qdq-Q2-Bmh" secondAttribute="top" type="default" id="geb-34-V5S"/>
                                                     <constraint firstItem="T0k-Ya-uWI" firstAttribute="leading" secondItem="RIf-ux-n7U" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="qWE-zu-bVF"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outlet property="nameLabel" destination="T0k-Ya-uWI" id="Bbu-GJ-vQt"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
@@ -189,8 +195,8 @@
                                     <constraint firstItem="n3z-7Y-dAN" firstAttribute="leading" secondItem="KgD-h5-mMY" secondAttribute="leading" type="default" id="0aQ-3a-KUK"/>
                                     <constraint firstItem="SzS-rk-Ohg" firstAttribute="baseline" secondItem="Keo-9b-4ku" secondAttribute="baseline" type="default" id="0rf-VF-xsI"/>
                                     <constraint firstItem="Keo-9b-4ku" firstAttribute="top" secondItem="ddh-c2-Ajq" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="4mW-y7-buJ"/>
+                                    <constraint firstItem="7nd-dx-aNh" firstAttribute="top" secondItem="KgD-h5-mMY" secondAttribute="top" constant="113" id="5qZ-yk-UHT"/>
                                     <constraint firstItem="Keo-9b-4ku" firstAttribute="leading" secondItem="ddh-c2-Ajq" secondAttribute="leading" type="default" id="9W0-pj-MHP"/>
-                                    <constraint firstItem="7nd-dx-aNh" firstAttribute="top" secondItem="KgD-h5-mMY" secondAttribute="top" constant="109" id="CJ7-HX-dbW"/>
                                     <constraint firstItem="n3z-7Y-dAN" firstAttribute="trailing" secondItem="KgD-h5-mMY" secondAttribute="trailing" type="default" id="Ejx-rt-ImJ"/>
                                     <constraint firstItem="n3z-7Y-dAN" firstAttribute="bottom" secondItem="KgD-h5-mMY" secondAttribute="bottom" type="default" id="I6K-Q3-FHy"/>
                                     <constraint firstItem="Keo-9b-4ku" firstAttribute="leading" secondItem="7nd-dx-aNh" secondAttribute="leading" type="default" id="JnS-9M-Oin"/>
@@ -203,10 +209,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.062745098039215685" green="0.086274509803921567" blue="0.11372549019607843" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="KgD-h5-mMY" firstAttribute="top" secondItem="j1q-Ak-TeL" secondAttribute="top" constant="53" id="4dA-Gd-hle"/>
                             <constraint firstItem="o7E-X6-0xa" firstAttribute="leading" secondItem="j1q-Ak-TeL" secondAttribute="leading" type="default" id="Aqd-Mv-HEo"/>
                             <constraint firstAttribute="bottom" secondItem="KgD-h5-mMY" secondAttribute="bottom" constant="9" id="Ji1-sJ-BQJ"/>
                             <constraint firstItem="o7E-X6-0xa" firstAttribute="trailing" secondItem="j1q-Ak-TeL" secondAttribute="trailing" type="default" id="RwP-7b-6Ry"/>
+                            <constraint firstItem="KgD-h5-mMY" firstAttribute="top" secondItem="o7E-X6-0xa" secondAttribute="bottom" type="default" id="Urx-ZR-L04"/>
                             <constraint firstItem="KgD-h5-mMY" firstAttribute="leading" secondItem="j1q-Ak-TeL" secondAttribute="leading" constant="9" id="cFe-gh-2nc"/>
                             <constraint firstItem="xUR-vU-jq6" firstAttribute="centerX" secondItem="o7E-X6-0xa" secondAttribute="centerX" type="default" id="g94-0Y-KwL"/>
                             <constraint firstItem="o7E-X6-0xa" firstAttribute="top" secondItem="j1q-Ak-TeL" secondAttribute="top" type="default" id="q1W-nf-lyl"/>
@@ -257,36 +263,6 @@
     <resources>
         <image name="rss-icon.jpeg" width="225" height="225"/>
     </resources>
-    <classes>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="RouseFeedController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RouseFeedController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="RouseFeedsController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RouseFeedsController.h"/>
-            <relationships>
-                <relationship kind="action" name="pageControlValueChanged:"/>
-                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="RouseFeedsManagerViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RouseFeedsManagerViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="addFeed:"/>
-                <relationship kind="action" name="cancel:"/>
-                <relationship kind="outlet" name="addButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="backgroundView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="childView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="textField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

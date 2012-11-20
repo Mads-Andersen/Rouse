@@ -111,7 +111,7 @@
         NSMutableArray *photos = [parser getImages:self.feed.url];
         if(photos.count > 0)
         {
-            Photo *photo = [photos objectAtIndex:0];
+            Image *photo = [photos objectAtIndex:0];
             UIImage *image = [RSSParser getThumbnailImage:photo];
             dispatch_async(dispatch_get_main_queue(), ^
             {
@@ -146,14 +146,14 @@
      }];
 }
 
-- (void) beginWobble
+- (void) beginWiggle
 {
     float delay = [RouseUtility randFloatBetween:0.0 and:0.15];
-    [self performSelector:@selector(beginWobbleImpl) withObject:self afterDelay:delay];
+    [self performSelector:@selector(beginWiggleImpl) withObject:self afterDelay:delay];
     
 }
 
-- (void) beginWobbleImpl
+- (void) beginWiggleImpl
 {
     self.deleteImageView.hidden = NO;
     
@@ -162,7 +162,7 @@
     CGAffineTransform rightWobble = CGAffineTransformRotate(CGAffineTransformIdentity, RADIANS(2.0));
     
     self.transform = leftWobble;
-    [UIView beginAnimations:@"wobble" context:(__bridge void *)(self)];
+    [UIView beginAnimations:@"wiggle" context:(__bridge void *)(self)];
     [UIView setAnimationRepeatAutoreverses:YES];
     [UIView setAnimationRepeatCount:INFINITY];
     [UIView setAnimationDuration:0.15];
@@ -172,7 +172,7 @@
     [UIView commitAnimations];
 }
 
-- (void) endWobble
+- (void) endWiggle
 {
     [self.layer removeAllAnimations];
     self.deleteImageView.hidden = YES;

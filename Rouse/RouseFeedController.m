@@ -8,7 +8,7 @@
 
 #import "RouseConstants.h"
 #import "RouseFeedController.h"
-#import "Photo.h"
+#import "Image.h"
 #import "RouseUtility.h"
 #import "RSSParser.h"
 #import "RouseImageCellView.h"
@@ -24,7 +24,7 @@
 
 @implementation RouseFeedController
 @synthesize feed;
-@synthesize photos;
+@synthesize images;
 @synthesize cells;
 
 - (void) setupWith:(Feed*)feedVar;
@@ -32,7 +32,7 @@
     RSSParser *parser = [[RSSParser alloc] init];
     self.feed = feedVar;
     self.title = [self.feed name];
-    self.photos = [parser getImages:self.feed.url];
+    self.images = [parser getImages:self.feed.url];
 }
 
 - (void)viewDidLoad
@@ -63,10 +63,10 @@
 {
     self.cells = [[NSMutableArray alloc]init];
     
-    int count = [self.photos count];
+    int count = [self.images count];
     for (int i = 0; i < count; i++)
     {
-        Photo *photo = [self.photos objectAtIndex:i];
+        Image *photo = [self.images objectAtIndex:i];
         RouseImageCellView *cell = [[RouseImageCellView alloc]initWith:photo];
         UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTap:)];
         [cell addGestureRecognizer:tap];
@@ -164,7 +164,7 @@
 - (void)imageTap:(UITapGestureRecognizer *)recognizer
 {
     RouseImageCellView *cell = (RouseImageCellView*)recognizer.view;
-    RouseImageDetailController *viewController = [[RouseImageDetailController alloc]initWith:cell.photo];
+    RouseImageDetailController *viewController = [[RouseImageDetailController alloc]initWith:cell.image];
     viewController.modalPresentationStyle = UIModalPresentationFormSheet;
     viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:viewController animated:YES completion:nil];
@@ -185,7 +185,7 @@
     }
     
     RSSParser *parser = [[RSSParser alloc] init];
-    self.photos = [parser getImages:self.feed.url];
+    self.images = [parser getImages:self.feed.url];
     [self createCells];
     [self showView];
 }

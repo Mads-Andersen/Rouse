@@ -10,18 +10,18 @@
 #import "RouseUtility.h"
 #import "RouseImageCellView.h"
 #import "RSSParser.h"
-#import "Photo.h"
+#import "Image.h"
 
 @interface RouseImageCellView()
 @property (nonatomic, retain) UIImageView *imageView;
 @end
 
 @implementation RouseImageCellView
-@synthesize photo;
+@synthesize image;
 
-- (id)initWith:(Photo*)photoVar
+- (id)initWith:(Image*)imageVar
 {
-    self.photo = photoVar;
+    self.image = imageVar;
     int margin = ImageCellMargin;
     int width = ImageCellWidth-2*margin;
     int height = ImageCellHeight-2*margin;
@@ -38,9 +38,9 @@
     return self;
 }
 
-- (id)initWith:(Photo*)photoVar x:(CGFloat)x y:(CGFloat)y animation:(BOOL)animation
+- (id)initWith:(Image*)imageVar x:(CGFloat)x y:(CGFloat)y animation:(BOOL)animation
 {
-    self.photo = photoVar;
+    self.image = imageVar;
     int margin = ImageCellMargin;
     int width = ImageCellWidth-2*margin;
     int height = ImageCellHeight-2*margin;
@@ -63,9 +63,9 @@
 
 - (void)setImage
 {
-    if(self.photo.thumbnailImage)
+    if(self.image.thumbnailImage)
     {
-        self.imageView.image = self.photo.thumbnailImage;
+        self.imageView.image = self.image.thumbnailImage;
         return;
     }
     else
@@ -76,7 +76,7 @@
     
     dispatch_async(dispatch_get_global_queue(0,0), ^
     {
-        UIImage *image = [RSSParser getThumbnailImage:self.photo];
+        UIImage *image = [RSSParser getThumbnailImage:self.image];
         dispatch_async(dispatch_get_main_queue(), ^
         {
             self.imageView.image = image;

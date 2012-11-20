@@ -10,7 +10,7 @@
 
 @interface RSSParser() <NSXMLParserDelegate>
 @property (nonatomic, retain) NSMutableArray *photos;
-@property (nonatomic, retain) Photo *currentPhoto;
+@property (nonatomic, retain) Image *currentPhoto;
 @property (nonatomic) BOOL saveTitle;
 @end
 
@@ -30,8 +30,7 @@
 	NSURL *rssURL = [NSURL URLWithString:escapedURL];
     NSXMLParser *rssParser = [[NSXMLParser alloc] initWithContentsOfURL:rssURL];
     [rssParser setDelegate:self];
-	BOOL x = [rssParser parse];
-    NSLog(@"%@", x ? @"YES" : @"NO");
+	[rssParser parse];
     return self.photos;
 }
 
@@ -43,7 +42,7 @@
 {
     if([elementName isEqualToString:@"item"] || [elementName isEqualToString:@"entry"])
     {
-        self.currentPhoto = [[Photo alloc]init];
+        self.currentPhoto = [[Image alloc]init];
     }
     
     
@@ -162,7 +161,7 @@
 }
 
 
-+(UIImage*)getThumbnailImage:(Photo*)photo
++(UIImage*)getThumbnailImage:(Image*)photo
 {
     NSString *url = photo.thumbnailURL;
     NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: url]];
@@ -170,12 +169,10 @@
 }
 
 
-+(UIImage*)getFullImage:(Photo*)photo
++(UIImage*)getFullImage:(Image*)photo
 {
     NSString *url = photo.fullContentURL;
     UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-    //NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: url]];
-    //return [UIImage imageWithData: imageData];
     return image;
 }
 
@@ -185,8 +182,6 @@
     
     if (range.length > 0)
     {
-      //  NSLog(@"lol");
-      //  NSLog(@"%@", input);
         return YES;
     }
     else

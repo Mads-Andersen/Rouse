@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RouseFeedsManagerViewController : UIViewController
-@property (nonatomic, strong) IBOutlet UIView *childView;
 
 @end

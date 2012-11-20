@@ -14,16 +14,16 @@
 @end
 
 @implementation RouseImageDetailController
-@synthesize photo;
+@synthesize image;
 
-- (id)initWith:(Photo*)photoVar
+- (id)initWith:(Image*)imageVar
 {
     if(self == [super init])
     {
-        self.photo = photoVar;
+        self.image = imageVar;
         self.imageView = [[UIImageView alloc]init];
         self.imageView.userInteractionEnabled = YES;
-        self.imageView.image = photoVar.thumbnailImage;
+        self.imageView.image = imageVar.thumbnailImage;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     
@@ -37,7 +37,7 @@
     
     dispatch_async(dispatch_get_global_queue(0,0), ^
     {
-        UIImage *image = [RSSParser getFullImage:self.photo];
+        UIImage *image = [RSSParser getFullImage:self.image];
         dispatch_async(dispatch_get_main_queue(), ^
         {
             self.imageView.image = image;
@@ -57,9 +57,9 @@
 
 - (void)setImage
 {
-    if(self.photo.thumbnailImage)
+    if(self.image.thumbnailImage)
     {
-        self.imageView.image = self.photo.thumbnailImage;
+        self.imageView.image = self.image.thumbnailImage;
         return;
     }
     else

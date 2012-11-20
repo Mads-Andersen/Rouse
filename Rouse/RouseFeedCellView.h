@@ -21,8 +21,8 @@
 
 - (id)initWithFeed:(Feed*)feedVar;
 - (id)initWithFeed:(Feed*)feedVar xPos:(CGFloat)x yPos:(CGFloat)y animation:(BOOL)animation;
-- (void)beginWobble;
-- (void)endWobble;
+- (void)beginWiggle;
+- (void)endWiggle;
 - (void)setPosition:(CGFloat)x y:(CGFloat)y;
 - (void)move:(CGFloat)x y:(CGFloat)y;
 

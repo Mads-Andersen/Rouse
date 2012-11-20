@@ -12,11 +12,11 @@
 @interface RouseFeedController : UIViewController
 {
     Feed *feed;
-    NSMutableArray *photos;
+    NSMutableArray *images;
     NSMutableArray *cells;
 }
 @property (nonatomic, strong) Feed *feed;
-@property (nonatomic, retain) NSMutableArray *photos;
+@property (nonatomic, retain) NSMutableArray *images;
 @property (nonatomic, retain) NSMutableArray *cells;
 
 - (void) setupWith:(Feed*)feedVar;

@@ -7,16 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Photo.h"
+#import "Image.h"
 
 @interface RouseImageCellView : UIView
 {
-    Photo *photo;
+    Image *image;
 }
-@property (nonatomic, retain) Photo *photo;
+@property (nonatomic, retain) Image *image;
 
-- (id)initWith:(Photo*)photoVar;
-- (id)initWith:(Photo*)photoVar x:(CGFloat)x y:(CGFloat)y animation:(BOOL)animation;
+- (id)initWith:(Image*)imageVar;
+- (id)initWith:(Image*)imageVar x:(CGFloat)x y:(CGFloat)y animation:(BOOL)animation;
 - (void)setPositionX:(CGFloat)x y:(CGFloat)y;
 
 @end
