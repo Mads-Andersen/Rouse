@@ -37,10 +37,10 @@
     
     dispatch_async(dispatch_get_global_queue(0,0), ^
     {
-        UIImage *image = [RSSParser getFullImage:self.image];
+        UIImage *imageVar = [RSSParser getFullImage:self.image];
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            self.imageView.image = image;
+            self.imageView.image = imageVar;
             //self.view.superview.bounds = CGRectMake(100, 100, image.size.width, image.size.height);
             CGSize bounds = self.view.superview.bounds.size;
             [self.imageView setFrame:CGRectMake(5, 5, bounds.width-2*5, bounds.height-2*5)];
@@ -50,9 +50,6 @@
     
     UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTap:)];
     [self.imageView addGestureRecognizer:tap];
-    
-    
-    
 }
 
 - (void)setImage

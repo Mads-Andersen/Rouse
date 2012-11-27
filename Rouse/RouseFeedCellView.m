@@ -17,6 +17,7 @@
 @interface RouseFeedCellView()
 @property (nonatomic, retain) UIImageView *deleteImageView;
 @property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UILabel *nameLabel;
 @end
 
 @implementation RouseFeedCellView
@@ -26,7 +27,7 @@
 @synthesize deleteImageView;
 @synthesize imageView;
 
-- (id)initWithFeed:(Feed *)feedVar
+- (id)initWithFeed:(Feed *)feedVar animation:(BOOL)animation
 {
     self.xPosition = 0;
     self.yPosition = 0;
@@ -34,21 +35,6 @@
     
     self = [super initWithFrame:CGRectMake(0, 0, FeedCellWidth, FeedCellHeight)];
     if(self == [super init])
-    {
-        [self createView];
-    }
-    
-    return self;
-}
-
-- (id)initWithFeed:(Feed*)feedVar xPos:(CGFloat)x yPos:(CGFloat)y animation:(BOOL)animation
-{
-    self.xPosition = x;
-    self.yPosition = y;
-    self.feed = feedVar;
-    
-    self = [super initWithFrame:CGRectMake(x, y, FeedCellWidth, FeedCellHeight)];
-    if(self)
     {
         [self createView];
         if(animation) [self animate];
@@ -59,6 +45,8 @@
 
 - (void)createView
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(feedNameDownloaded:) name:@"FeedNameDownloaded" object:nil];
+    
     int topMargin = FeedCellClipMargin;
     int margin = FeedCellImageMargin;
     int infoY = FeedCellPictureHolderHeight + topMargin;
@@ -75,13 +63,13 @@
     self.deleteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(-25, -10, delete.size.width*1.3, delete.size.height*1.3)];
     self.deleteImageView.hidden = YES;
     
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, infoY, FeedCellWidth, FeedCellInformationHeight/2)];
+    self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, infoY, FeedCellWidth, FeedCellInformationHeight/2)];
     UILabel *urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, infoY+FeedCellInformationHeight/2, FeedCellWidth, FeedCellInformationHeight/2)];
-    [nameLabel setBackgroundColor:[UIColor clearColor]];
-    [nameLabel setText:self.feed.name];
-    [nameLabel setFont:[[RouseConstants instance] FeedCellNameFont]];
-    [nameLabel setTextColor:[UIColor whiteColor]];
-    [nameLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.nameLabel setBackgroundColor:[UIColor clearColor]];
+    [self.nameLabel setText:self.feed.name];
+    [self.nameLabel setFont:[[RouseConstants instance] FeedCellNameFont]];
+    [self.nameLabel setTextColor:[UIColor whiteColor]];
+    [self.nameLabel setTextAlignment:NSTextAlignmentCenter];
     [urlLabel setBackgroundColor:[UIColor clearColor]];
     [urlLabel setText:self.feed.url];
     [urlLabel setFont:[[RouseConstants instance] FeedCellUrlFont]];
@@ -94,7 +82,7 @@
     [self addSubview:self.imageView];
     [self addSubview:clipView];
     [self addSubview:self.deleteImageView];
-    [self addSubview:nameLabel];
+    [self addSubview:self.nameLabel];
     [self addSubview:urlLabel];
     [self.deleteImageView setImage:delete];
     [self.deleteImageView setUserInteractionEnabled:YES];
@@ -107,8 +95,7 @@
 {
     dispatch_async(dispatch_get_global_queue(0,0), ^
     {
-        RSSParser *parser = [[RSSParser alloc]init];
-        NSMutableArray *photos = [parser getImages:self.feed.url];
+        NSMutableArray *photos = [RSSParser getImages:self.feed.url];
         if(photos.count > 0)
         {
             Image *photo = [photos objectAtIndex:0];
@@ -133,6 +120,15 @@
      }];
 }
 
+- (void)feedNameDownloaded:(NSNotification*)notification
+{
+    if(self.feed == notification.object)
+    {
+        [self.nameLabel setText:self.feed.name];
+    }
+
+}
+
 - (void)deleteTap:(UITapGestureRecognizer *)recognizer
 {
     [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^
@@ -141,8 +137,8 @@
      }
      completion:^(BOOL finished)
      {
-         [[NSNotificationCenter defaultCenter] postNotificationName:@"FeedCellDeleted" object:self];
          [self removeFromSuperview];
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"FeedCellDeleted" object:self];
      }];
 }
 
@@ -188,6 +184,7 @@
 
 - (void) move:(CGFloat)x y:(CGFloat)y
 {
+    self.transform = CGAffineTransformIdentity;
     self.xPosition = x;
     self.yPosition = y;
     
@@ -195,6 +192,14 @@
     self.frame = CGRectMake(x, y, self.frame.size.width, self.frame.size.height);
     [UIView setAnimationDuration:0.3];
     [UIView commitAnimations];
+    
+    [self beginWiggle];
+    
+}
+
+-(void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

@@ -10,7 +10,7 @@
 #import "RouseSuggestionCell.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface RouseFeedsManagerViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface RouseFeedsManagerViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak) IBOutlet UITextField *textField;
 @property (weak) IBOutlet UIView *backgroundView;
@@ -33,21 +33,33 @@
     self.addButton.layer.cornerRadius = 4;
     self.addButton.layer.masksToBounds = YES;
     [self.view endEditing:YES];
+    self.textField.delegate = self;
     
     self.suggestions = [[NSMutableArray alloc]init];
-    [self.suggestions addObject:[[Feed alloc]initWithName:@"Uploads from everyone" Url:@"http://api.flickr.com/services/feeds/photos_public.gne"]];
-    [self.suggestions addObject:[[Feed alloc]initWithName:@"FFFFOUND! / EVERYONE" Url:@"http://feeds.feedburner.com/ffffound/everyone"]];
-    [self.suggestions addObject:[[Feed alloc]initWithName:@"NASA Image of the Day (Large)" Url:@"http://www.nasa.gov/rss/lg_image_of_the_day.rss"]];
-    [self.suggestions addObject:[[Feed alloc]initWithName:@"imgur: the simple image sharer" Url:@"http://feeds.feedburner.com/ImgurGallery?format=xml"]];
-    [self.suggestions addObject:[[Feed alloc]initWithName:@"Earth Shots - Photo of the Day Contest" Url:@"http://feeds.feedburner.com/EarthShots"]];
-    [self.suggestions addObject:[[Feed alloc]initWithName:@"Gino Caron Photographe" Url:@"http://feeds.feedburner.com/MotsEnImages"]];
-    [self.suggestions addObject:[[Feed alloc]initWithName:@"DigitalPhotographySchool" Url:@"http://feeds.feedburner.com/DigitalPhotographySchool"]];
-    [self.suggestions addObject:[[Feed alloc]initWithName:@"JMG-Galleries - Jim M. Goldstein Photography" Url:@"http://feeds.feedburner.com/jmg-galleries"]];
+    [self.suggestions addObject:[[Feed alloc]initWithUrl:@"http://api.flickr.com/services/feeds/photos_public.gne"]];
+    [self.suggestions addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/ffffound/everyone"]];
+    [self.suggestions addObject:[[Feed alloc]initWithUrl:@"http://www.nasa.gov/rss/lg_image_of_the_day.rss"]];
+    [self.suggestions addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/ImgurGallery?format=xml"]];
+    [self.suggestions addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/EarthShots"]];
+    [self.suggestions addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/MotsEnImages"]];
+    [self.suggestions addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/DigitalPhotographySchool"]];
+    [self.suggestions addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/jmg-galleries"]];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)disablesAutomaticKeyboardDismissal
+{
+    return NO;
 }
 
 -(IBAction)cancel:(id)sender
@@ -57,8 +69,9 @@
 
 -(IBAction)addFeed:(id)sender
 {
-    NSString *text = self.textField.text;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateFeed" object:text];
+    NSString *url = self.textField.text;
+    Feed *feed = [[Feed alloc]initWithUrl:url];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateFeed" object:feed];
     
 }
 
@@ -72,7 +85,7 @@
     RouseSuggestionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RouseSuggestionCell" forIndexPath:indexPath];
     Feed *suggestion = [self.suggestions objectAtIndex:indexPath.item];
     [cell setFeed:suggestion];
-    [cell updateLabel];
+    [cell setupNotications];
     
     return cell;
 }

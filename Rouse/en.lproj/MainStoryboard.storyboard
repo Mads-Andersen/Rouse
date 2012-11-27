@@ -179,7 +179,10 @@
                                             <constraint firstAttribute="width" constant="378" id="weO-VT-eFw"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" enablesReturnKeyAutomatically="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="GZD-qa-aYN" id="f1L-rR-0mf"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Search" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddh-c2-Ajq">
                                         <constraints>
@@ -221,7 +224,9 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addButton" destination="SzS-rk-Ohg" id="kgr-PR-qRC"/>
                         <outlet property="backgroundView" destination="KgD-h5-mMY" id="lBz-MZ-sjw"/>
+                        <outlet property="textField" destination="Keo-9b-4ku" id="ofy-Zw-5Vu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Krs-1M-WWV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -263,6 +268,42 @@
     <resources>
         <image name="rss-icon.jpeg" width="225" height="225"/>
     </resources>
+    <classes>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="RouseFeedController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RouseFeedController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="RouseFeedsController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RouseFeedsController.h"/>
+            <relationships>
+                <relationship kind="action" name="pageControlValueChanged:"/>
+                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="RouseFeedsManagerViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RouseFeedsManagerViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="addFeed:"/>
+                <relationship kind="action" name="cancel:"/>
+                <relationship kind="outlet" name="addButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="backgroundView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="textField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="RouseSuggestionCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RouseSuggestionCell.h"/>
+            <relationships>
+                <relationship kind="action" name="addFeed:"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

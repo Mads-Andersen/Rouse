@@ -14,7 +14,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) Feed *feed;
 
-- (void)updateLabel;
+- (void)setupNotications;
 - (IBAction)addFeed:(id)sender;
 
 @end

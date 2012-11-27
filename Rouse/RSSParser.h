@@ -11,12 +11,9 @@
 #import "Image.h"
 
 @interface RSSParser : NSObject
-{
-    NSMutableArray *photos;
-}
 
--(id)init;
--(NSMutableArray*)getImages:(NSString*)rssURLString;
++(NSString*)getName:(NSString*)rssURLString;
++(NSMutableArray*)getImages:(NSString*)rssURLString;
 +(UIImage*)getThumbnailImage:(Image*)photo;
 +(UIImage*)getFullImage:(Image*)photo;
 

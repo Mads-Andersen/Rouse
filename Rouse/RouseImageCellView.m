@@ -70,16 +70,16 @@
     }
     else
     {
-        UIImage *image = [[RouseConstants instance]LoadingImage];
-        [self.imageView setImage:image];
+        UIImage *img = [[RouseConstants instance]LoadingImage];
+        [self.imageView setImage:img];
     }
     
     dispatch_async(dispatch_get_global_queue(0,0), ^
     {
-        UIImage *image = [RSSParser getThumbnailImage:self.image];
+        UIImage *img = [RSSParser getThumbnailImage:self.image];
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            self.imageView.image = image;
+            self.imageView.image = img;
         });
     });
 }

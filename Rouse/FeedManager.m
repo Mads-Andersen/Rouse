@@ -30,6 +30,19 @@
 -(void)load
 {
     feeds = [[NSMutableArray alloc] init];
+    
+    
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://api.flickr.com/services/feeds/photos_public.gne"]];
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/ffffound/everyone"]];
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://www.nasa.gov/rss/lg_image_of_the_day.rss"]];
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/ImgurGallery?format=xml"]];
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/EarthShots"]];
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/MotsEnImages"]];
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/DigitalPhotographySchool"]];
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/jmg-galleries"]];
+    [feeds addObject:[[Feed alloc]initWithUrl:@"http://feeds.feedburner.com/alphatracks/mxdo"]];
+    
+    /*
     [feeds addObject:[[Feed alloc]initWithName:@"Uploads from everyone" Url:@"http://api.flickr.com/services/feeds/photos_public.gne"]];
     [feeds addObject:[[Feed alloc]initWithName:@"FFFFOUND! / EVERYONE" Url:@"http://feeds.feedburner.com/ffffound/everyone"]];
     [feeds addObject:[[Feed alloc]initWithName:@"NASA Image of the Day (Large)" Url:@"http://www.nasa.gov/rss/lg_image_of_the_day.rss"]];
@@ -39,6 +52,7 @@
     [feeds addObject:[[Feed alloc]initWithName:@"DigitalPhotographySchool" Url:@"http://feeds.feedburner.com/DigitalPhotographySchool"]];
     [feeds addObject:[[Feed alloc]initWithName:@"JMG-Galleries - Jim M. Goldstein Photography" Url:@"http://feeds.feedburner.com/jmg-galleries"]];
     [feeds addObject:[[Feed alloc]initWithName:@"Alphatracks" Url:@"http://feeds.feedburner.com/alphatracks/mxdo"]];
+     */
 }
 
 +(FeedManager*)loadFromDevice

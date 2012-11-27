@@ -10,5 +10,6 @@
 @property (retain) NSString* url;
 
 - (id) initWithName:(NSString*)Name Url:(NSString*)Url;
+- (id) initWithUrl:(NSString*)Url;
 
 @end

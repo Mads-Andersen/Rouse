@@ -70,6 +70,7 @@
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(feedDeleted:) name:@"FeedCellDeleted" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createFeed:) name:@"CreateFeed" object:nil];
 }
 
 -(void)createCells
@@ -86,7 +87,7 @@
 
 -(void)createCell:(Feed*)feed
 {
-    RouseFeedCellView *cell = [[RouseFeedCellView alloc]initWithFeed:feed];
+    RouseFeedCellView *cell = [[RouseFeedCellView alloc]initWithFeed:feed animation:YES];
     UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(feedTap:)];
     UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     press.minimumPressDuration = 1.0;
@@ -142,7 +143,7 @@
     int margin = 30;
     
     int count = [cells count];
-    int pages = count / MaxFeedsPerPage;
+    int pages = (count-1) / MaxFeedsPerPage;
     self.scrollView.contentSize = CGSizeMake(viewWidth*(pages+1), viewHeight);
     
     for (int i = 0; i < count; i++)
@@ -171,7 +172,7 @@
     int margin = 30;
     
     int count = [cells count];
-    int pages = count / MaxFeedsPerPage;
+    int pages = (count-1) / MaxFeedsPerPage;
     self.scrollView.contentSize = CGSizeMake(viewWidth*(pages+1), viewHeight);
     
     for (int i = 0; i < count; i++)
@@ -197,9 +198,9 @@
     [self showCells];
 }
 
-- (void)createFeed:(id)object
+- (void)createFeed:(NSNotification*)notification
 {
-    Feed *feed = [[Feed alloc]initWithName:@"" Url:@"url"];
+    Feed *feed = notification.object;
     [self.feedManager.feeds addObject:feed];
     [self.feedManager saveToDevice];
     [self createCell:feed];
@@ -209,7 +210,6 @@
 
 - (void)feedDeleted:(id)object
 {
-    NSLog(@"hej");
     RouseFeedCellView *cell = [object object];
     int index = [self.cells indexOfObject:cell];
     int count = [self.cells count];
@@ -224,12 +224,19 @@
             int y = previous.yPosition;
             [current move:x y:y];
         }
+        else
+        {
+            RouseFeedCellView *current = [self.cells objectAtIndex:i];
+            int x = current.xPosition;
+            int y = current.yPosition;
+            [current move:x y:y];
+        }
+        
     }
     [self.cells removeObject:cell];
-    [self.feedManager.feeds removeObject:cell.feed];
+    [self.feedManager.feeds removeObjectAtIndex:index];
     [self.feedManager saveToDevice];
     [self showCells];
-    NSLog(@"hej2");
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

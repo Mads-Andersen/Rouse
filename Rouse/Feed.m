@@ -7,6 +7,7 @@
 //
 
 #import "Feed.h"
+#import "RSSParser.h"
 
 @interface Feed() <NSCoding>
 
@@ -23,6 +24,23 @@
     {
         self.name = Name;
         self.url = Url;
+    }
+    return self;
+}
+
+- (id) initWithUrl:(NSString*)Url
+{
+    if(self = [super init])
+    {
+        self.url = Url;
+        dispatch_async(dispatch_get_global_queue(0,0), ^
+        {
+            self.name = [RSSParser getName:Url];
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"FeedNameDownloaded" object:self];
+            });
+        });
     }
     return self;
 }

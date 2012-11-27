@@ -29,10 +29,18 @@
 
 - (void) setupWith:(Feed*)feedVar;
 {
-    RSSParser *parser = [[RSSParser alloc] init];
     self.feed = feedVar;
     self.title = [self.feed name];
-    self.images = [parser getImages:self.feed.url];
+    
+    dispatch_async(dispatch_get_global_queue(0,0), ^
+    {
+        self.images = [RSSParser getImages:self.feed.url];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self createCells];
+            [self showView];
+        });
+    });
 }
 
 - (void)viewDidLoad
@@ -40,8 +48,6 @@
     [super viewDidLoad];
     [self setupBackground];
     [self setupNotications];
-    [self createCells];
-    [self showView];
 }
 
 - (void)setupBackground
@@ -184,8 +190,7 @@
         [view removeFromSuperview];
     }
     
-    RSSParser *parser = [[RSSParser alloc] init];
-    self.images = [parser getImages:self.feed.url];
+    self.images = [RSSParser getImages:self.feed.url];
     [self createCells];
     [self showView];
 }

@@ -19,8 +19,7 @@
 @property (nonatomic) CGFloat xPosition;
 @property (nonatomic) CGFloat yPosition;
 
-- (id)initWithFeed:(Feed*)feedVar;
-- (id)initWithFeed:(Feed*)feedVar xPos:(CGFloat)x yPos:(CGFloat)y animation:(BOOL)animation;
+- (id)initWithFeed:(Feed*)feedVar animation:(BOOL)animation;
 - (void)beginWiggle;
 - (void)endWiggle;
 - (void)setPosition:(CGFloat)x y:(CGFloat)y;
